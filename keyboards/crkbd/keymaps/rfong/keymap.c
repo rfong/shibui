@@ -258,7 +258,7 @@ void oled_render_logo(void) {
 }
 
 void oled_task_user(void) {
-    if (is_keyboard_master()) {
+    if (is_keyboard_left()) {
         oled_render_layer_state();
         oled_render_keylog();
     } else {
