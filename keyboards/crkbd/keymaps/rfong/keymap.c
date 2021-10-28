@@ -72,6 +72,12 @@ void matrix_scan_user(void) {
 #endif // defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && #defined MOUSEKEY_ENABLE
 
 
+// Keymap macros
+#define LTHM3 MT(MOD_LCTL,KC_TAB)
+#define LTHM1 MT(MOD_LGUI,KC_ENT)
+#define RTHM1 MT(MOD_LSFT|MOD_RSFT,KC_SPC)
+#define RTHM3 MT(MOD_LALT|MOD_RALT,KC_ESC)
+
 // Keymap
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_split_3x5_3(
@@ -82,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                          KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
-                                 KC_LGUI,   MO(1),  KC_ENT,     KC_SPC,   MO(2), KC_RALT
+                                   LTHM3,   MO(1),    LTHM1,     RTHM1,   MO(2),   RTHM3 
                               //`--------------------------'  `--------------------------'
   ),
 
