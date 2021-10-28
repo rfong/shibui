@@ -1,6 +1,8 @@
 /*
 Copyright 2019 @foostan
 Copyright 2020 Drashna Jaelre <@drashna>
+Copyright 2020 @manna-harbor
+Copyright 2021 @rfong
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,6 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#include MH_USER_NAME_H // for MH_AUTO_BUTTONS_LAYER
 #endif
 
+/* Activate mouse button layer with PS2 mouse - crkbd:manna-harbour */
 #if defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE
 
 static uint16_t mh_auto_buttons_timer;
@@ -72,7 +75,7 @@ void matrix_scan_user(void) {
 #endif // defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && #defined MOUSEKEY_ENABLE
 
 
-// Keymap macros
+/* Keymap macros - @rfong */
 #define LTHM3 MT(MOD_LCTL,KC_TAB)
 #define LTHM1 MT(MOD_LGUI,KC_ENT)
 #define RTHM1 MT(MOD_LSFT|MOD_RSFT,KC_SPC)
@@ -97,13 +100,14 @@ enum custom_keycodes {
     SA_COPY,
 };
 
-// Keymap
+/* Keymap - @rfong */
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+  /* BASE (ALPHAS) */
   [0] = LAYOUT_split_3x5_3(
   //,--------------------------------------------.                    ,--------------------------------------------.
          KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,
+         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_QUOT,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                          KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
@@ -111,6 +115,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                               //`--------------------------'  `--------------------------'
   ),
 
+  /* NUMROW & SYMBOLS */
   [1] = LAYOUT_split_3x5_3(
   //,--------------------------------------------.                    ,--------------------------------------------.
          KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
@@ -123,6 +128,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                               //`--------------------------'  `--------------------------'
   ),
 
+  /* VIM */
   [2] = LAYOUT_split_3x5_3(
   //,--------------------------------------------.                    ,--------------------------------------------.
       MC_VQUI, MC_VSAV, XXXXXXX, XXXXXXX, MC_LANG,                       KC_ENT, KC_SCLN, KC_COLN, KC_MINS, KC_EQL,
@@ -135,6 +141,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                               //`--------------------------'  `--------------------------'
   ),
 
+  /* SPECIALS & MOUSE */
   [3] = LAYOUT_split_3x5_3(
   //,--------------------------------------------.                    ,--------------------------------------------.
         RESET, RGB_HUI, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_BTN1, KC_BTN2, XXXXXXX,  MC_SLP,
@@ -147,7 +154,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                               //`--------------------------'  `--------------------------'
   ),
 
-  /* MOUSE BUTTON LAYER */
+  /* MOMENTARY MOUSE BUTTONS FOR TRACKPOINT */
   [4] = LAYOUT_split_3x5_3(
   //,--------------------------------------------.                    ,--------------------------------------------.
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -161,7 +168,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
-// OLED debugging
+/* This section from crkbd:default
+ * Send debug info to OLED */
 #ifdef OLED_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
   if (!is_keyboard_master()) {
@@ -259,6 +267,7 @@ void oled_task_user(void) {
 }
 #endif // OLED_ENABLE
 
+/* Special keycode processing - @rfong */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {  // on keypress
         // show keycode on OLED
@@ -270,7 +279,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         switch(keycode) {
             case MC_VSAV: SEND_STRING(":w"SS_TAP(X_ENT)); break;
             case MC_VQUI: SEND_STRING(":q"SS_TAP(X_ENT)); break;
-            case MC_VSPL: SEND_STRING(":sp"); break;
+            case MC_VSPL: SEND_STRING(":sp "); break;
             case MC_VTAB: SEND_STRING("s/^  /"); break;
             case MC_JSCL: SEND_STRING(" => {}"); break;
             case SA_COPY: SEND_STRING(SS_LCTL("ac")); break;  // example str
