@@ -21,12 +21,10 @@
   #define PS2_DATA_DDR DDRD
   #define PS2_DATA_BIT 1  // data pin 2
   #define PS2_MOUSE_ROTATE 90 // compensate for west-facing device orientation
-  /*
   #define PS2_MOUSE_SCROLL_BTN_MASK (1 << PS2_MOUSE_BTN_MIDDLE)
-  #define PS2_MOUSE_SCROLL_BTN_SEND TAPPING_TERM
-  #define PS2_MOUSE_SCROLL_DIVISOR_V 3
+  //#define PS2_MOUSE_SCROLL_BTN_SEND TAPPING_TERM
+  #define PS2_MOUSE_SCROLL_DIVISOR_V 5
   #define PS2_MOUSE_SCROLL_DIVISOR_H PS2_MOUSE_SCROLL_DIVISOR_V
-  */
 #endif
 
 #if defined MH_AUTO_BUTTONS
