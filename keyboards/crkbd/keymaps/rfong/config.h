@@ -6,7 +6,7 @@
 #define EE_HANDS
 
 #if defined MH_MODULE_TRACKPOINT && defined PS2_MOUSE_ENABLE
-  // clock on pin 3 (d0, int0)
+  // clock on pin 1 (d0, int0)
   #define PS2_CLOCK_PORT PORTD
   #define PS2_CLOCK_PIN PIND
   #define PS2_CLOCK_DDR DDRD
@@ -87,18 +87,3 @@
 #if defined MH_DEBUG
   #define PS2_MOUSE_DEBUG_RAW
 #endif
-
-/*
-#define LAYOUT_split_3x5_3( \
-       K00,   K01,   K02,   K03,   K04,   K05,   K06,   K07,   K08,   K09, \
-       K10,   K11,   K12,   K13,   K14,   K15,   K16,   K17,   K18,   K19, \
-       K20,   K21,   K22,   K23,   K24,   K25,   K26,   K27,   K28,   K29, \
-                     K32,   K33,   K34,   K35,   K36,   K37                \
-) \
-LAYOUT_split_3x6_3( \
-KC_NO, K00,   K01,   K02,   K03,   K04,   K05,   K06,   K07,   K08,   K09,   KC_NO, \
-KC_NO, K10,   K11,   K12,   K13,   K14,   K15,   K16,   K17,   K18,   K19,   KC_NO, \
-KC_NO, K20,   K21,   K22,   K23,   K24,   K25,   K26,   K27,   K28,   K29,   KC_NO, \
-                     K32,   K33,   K34,   K35,   K36,   K37 \
-)
-*/

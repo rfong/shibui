@@ -1,6 +1,8 @@
-## https://github.com/manna-harbour/qmk_firmware/blob/crkbd/keyboards/crkbd/keymaps/manna-harbour/readme.org
+# https://github.com/manna-harbour/qmk_firmware/blob/crkbd/keyboards/crkbd/keymaps/manna-harbour/readme.org
 
 BOOTLOADER=qmk-dfu
+#BOOTLOADER=atmel-dfu
+#BOOTLOADER=caterina
 
 #MH_MODULE=trackpoint
 #MH_MODULE=oled
@@ -27,19 +29,15 @@ MH_OLED_IMAGE=no
 #MH_RGB=underglow
 MH_RGB=no
 
-#MH_DEBUG=yes
-MH_DEBUG=no
+#DEBUG=yes
+DEBUG=no
 
 #LTO_ENABLE=yes
 LTO_ENABLE=no
 
-## rules.mk, config.h, manna-harbour_miryoku.h, manna-harbour_miryoku.c
-#USER_NAME := manna-harbour_miryoku
-
 
 this_dir=keyboards/crkbd/keymaps/rfong
 
-#OPT_DEFS += -DMH_USER_NAME_H=\"$(USER_NAME).h\"
 
 ifeq ($(strip $(MH_MODULE)), trackpoint)
   PS2_MOUSE_ENABLE = yes
@@ -66,24 +64,6 @@ ifeq ($(strip $(MH_OLED_MODE)), static)
   OPT_DEFS += -DMH_OLED_MODE_STATIC
 else ifeq ($(strip $(MH_OLED_MODE)), caps)
   OPT_DEFS += -DMH_OLED_MODE_CAPS
-endif
-
-images=$(this_dir)/mh_images
-originals=$(images)/originals
-converted=$(images)/converted
-
-$(converted)/%.c: $(originals)/%.*
-	$(this_dir)/mh_image_to_oled $< > $@
-
-ifeq ($(strip $(MH_OLED_IMAGE)), logo)
-  OPT_DEFS += -DMH_OLED_IMAGE_LOGO
-else ifneq ($(strip $(MH_OLED_IMAGE)), )
-  ifneq ($(strip $(MH_OLED_IMAGE)), no)
-    OPT_DEFS += -DMH_OLED_IMAGE_FILE
-    ifeq ($(strip $(OLED_DRIVER_ENABLE)), yes)
-      SRC += $(converted)/$(MH_OLED_IMAGE)
-    endif
-  endif
 endif
 
 ifeq ($(strip $(MH_RGB)), matrix)

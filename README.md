@@ -53,8 +53,10 @@ sudo make crkbd:rfong:dfu-split-left MH_MODULE=oled MH_RGB=matrix MH_DEBUG=yes L
 
 Including my VIA keymap file for posterity at [crkbd_via_shibui.json](master/tree/crkbd_via_shibui.json). The trackpoint will not work, but the Mod-Tap thumbs and other macros will work fine.
 
-# TODO
-- [ ] add mouse navigation to Layer 3 VIA file
-- [ ] support QMK Configurator
-- [ ] refactor out MH options no longer in use
-- [ ] add function keys
+---
+
+# Credit
+
+- Thanks manna-harbour for writing the first [QMK trackpoint hotswap doc](https://github.com/manna-harbour/crkbd/blob/master/trackpoint/readme.org) and very excellent firmware support for it! Most of my PS2 handling configuration is borrowed from the `crkbd:manna-harbour` keymap.
+- Thanks tzarc and fauxpark for helping me figure out my broken bootloaders!
+- Most of the OLED configuration comes from `crkbd:default`.
