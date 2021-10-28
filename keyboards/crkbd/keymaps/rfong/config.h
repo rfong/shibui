@@ -29,7 +29,7 @@
 
 #if defined MH_AUTO_BUTTONS
   #define MH_AUTO_BUTTONS_LAYER 4
-  #define MH_AUTO_BUTTONS_TIMEOUT 750
+  #define MH_AUTO_BUTTONS_TIMEOUT 300
 #endif
 
 #if !defined MH_LOW_MOUSE && defined PS2_MOUSE_ENABLE
