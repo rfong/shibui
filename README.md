@@ -1,11 +1,24 @@
 # shibui
 
-This is my 5x3+3 keymap and firmware for a `crkbd` board with:
+`shibui` is my 5x3+3 keymap and firmware for a `crkbd` board with:
 - a trackpoint hotswap mod on the right-hand side
 - a 128x32 OLED on the left-hand side
 - 5V Pro Micro controllers with `qmk-dfu` bootloaders
 
-# Build logs
+# Keymap ergonomics
+
+This keymap is designed to alleviate my primary RSI issue, which is pinky nerve pain, and to use as few layers as possible. You will probably not enjoy this keymap if your primary RSI issues are in your thumbs.
+
+### Design priorities
+- Reallocates traditional pinky work to the thumbs, in particular all modifiers
+- Leverage existing muscle memory from standard laptop keyboard layouts (but compactify it)
+- Chording comfort and minimal layer-switching for keys frequently used together
+- Use cases: `vim`, terminal ergonomics, notetaking
+- Numrow instead of numpad
+
+For more details on design choices, layout, and layer use cases, see [KEYMAP.md](KEYMAP.md).
+
+# Hardware build logs
 
 - [R61 trackpoint keyboard mod, part 1](https://rfong.github.io/rflog/2021/10/18/r61-trackpoint-pt1/): sourcing & disassembling the module. No real procedural changes from @manna-harbour's [crkbd hotswap trackpoint doc](https://github.com/manna-harbour/crkbd/blob/master/trackpoint/readme.org), but lots of pictures & tips.
 - [R61 trackpoint keyboard mod, part 2](https://rfong.github.io/rflog/2021/10/26/r61-trackpoint-pt2/): physical assembly, mounting, wiring. My build works in tight spaces and is rearranged to fit over keyboard controllers that use headers instead of low profile pins.
@@ -38,4 +51,10 @@ sudo make crkbd:rfong:dfu-split-left MH_MODULE=oled MH_RGB=matrix MH_DEBUG=yes L
 
 # Using with VIA (just the keymap)
 
-Including my VIA keymap file for posterity at [crkbd_via_shibui.json](master/tree/crkbd_via_shibui.json). The trackpoint will not work, but the Mod-Tap thumbs will work fine.
+Including my VIA keymap file for posterity at [crkbd_via_shibui.json](master/tree/crkbd_via_shibui.json). The trackpoint will not work, but the Mod-Tap thumbs and other macros will work fine.
+
+# TODO
+- [ ] add mouse navigation to Layer 3 VIA file
+- [ ] support QMK Configurator
+- [ ] refactor out MH options no longer in use
+- [ ] add function keys
