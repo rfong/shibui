@@ -144,11 +144,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /* SPECIALS & MOUSE */
   [3] = LAYOUT_split_3x5_3(
   //,--------------------------------------------.                    ,--------------------------------------------.
-        RESET, RGB_HUI, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_BTN1, KC_BTN2, XXXXXXX,  MC_SLP,
+        RESET, RGB_HUI, KC_VOLD, KC_VOLU, KC_MUTE,                      XXXXXXX, KC_BTN1, KC_BTN2, XXXXXXX,  MC_SLP,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-      RGB_MOD, RGB_HUD, RGB_SAI, XXXXXXX, MC_SFAL,                      KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, XXXXXXX,
+      RGB_MOD, RGB_HUD, KC_MPRV, KC_MNXT, MC_SFAL,                      KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, XXXXXXX,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, KC_LSFT, KC_LALT, XXXXXXX,                      MC_WNDL, MC_WNDF, MC_WNDR, XXXXXXX, XXXXXXX,
+      RGB_SAI, XXXXXXX, KC_LSFT, KC_LALT, KC_MPLY,                      MC_WNDL, MC_WNDF, MC_WNDR, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
                                  KC_TRNS, _______, KC_TRNS,     KC_TRNS, _______, KC_TRNS
                               //`--------------------------'  `--------------------------'
