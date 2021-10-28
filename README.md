@@ -1,6 +1,6 @@
 # shibui
 
-`shibui` is my 5x3+3 keymap and firmware for a `crkbd` board with:
+`shibui` is my 5x3+3 [QMK](https://qmk.fm/) keymap for a `crkbd` board with:
 - a trackpoint hotswap mod on the right-hand side
 - a 128x32 OLED on the left-hand side
 - 5V Pro Micro controllers with `qmk-dfu` bootloaders
