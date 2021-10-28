@@ -34,12 +34,12 @@ MH_DEBUG=no
 LTO_ENABLE=no
 
 ## rules.mk, config.h, manna-harbour_miryoku.h, manna-harbour_miryoku.c
-USER_NAME := manna-harbour_miryoku
+#USER_NAME := manna-harbour_miryoku
 
 
-this_dir=keyboards/crkbd/keymaps/manna-harbour
+this_dir=keyboards/crkbd/keymaps/rfong
 
-OPT_DEFS += -DMH_USER_NAME_H=\"$(USER_NAME).h\"
+#OPT_DEFS += -DMH_USER_NAME_H=\"$(USER_NAME).h\"
 
 ifeq ($(strip $(MH_MODULE)), trackpoint)
   PS2_MOUSE_ENABLE = yes
