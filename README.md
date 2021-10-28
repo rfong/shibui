@@ -41,12 +41,12 @@ ln -s keyboards/crkbd/keymaps/rfong $QMK_HOME/keyboards/crkbd/keymaps/rfong
 
 **Compile/flash right**
 ```
-sudo make crkbd:rfong:dfu-split-right MH_MODULE=trackpoint MH_AUTO_BUTTONS=yes MH_RGB=matrix LTO_ENABLE=yes MH_DEBUG=yes 
+sudo make crkbd:rfong:dfu-split-right MH_MODULE=trackpoint
 ```
 
 **Compile/flash left**
 ```
-sudo make crkbd:rfong:dfu-split-left MH_MODULE=oled MH_RGB=matrix MH_DEBUG=yes LTO_ENABLE=yes OLED_ENABLE=yes
+sudo make crkbd:rfong:dfu-split-left
 ```
 
 # Using with VIA (just the keymap)

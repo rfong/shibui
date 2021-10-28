@@ -9,31 +9,27 @@ BOOTLOADER=qmk-dfu
 #MH_MODULE=oled_old
 MH_MODULE=no
 
-#MH_AUTO_BUTTONS=yes
 MH_AUTO_BUTTONS=no
+OLED_ENABLE=yes
 
-#MH_LOW_MOUSE=yes
-MH_LOW_MOUSE=no
+ifeq ($(strip $(MH_MODULE)), trackpoint)
+  MH_AUTO_BUTTONS=yes
+  OLED_ENABLE=no
+endif
 
-#MH_OLED_MODE=static
-#MH_OLED_MODE=caps
-MH_OLED_MODE=no
-
-#MH_OLED_IMAGE=qmk.c
-#MH_OLED_IMAGE=image.c
-#MH_OLED_IMAGE=logo
-MH_OLED_IMAGE=no
 
 #MH_RGB=matrix
 #MH_RGB=backlight
 #MH_RGB=underglow
 MH_RGB=no
 
-#DEBUG=yes
-DEBUG=no
+DEBUG=yes
+MH_DEBUG=yes
+LTO_ENABLE=yes
 
-#LTO_ENABLE=yes
-LTO_ENABLE=no
+MH_LOW_MOUSE=no
+MH_OLED_MODE=no
+MH_OLED_IMAGE=no
 
 
 this_dir=keyboards/crkbd/keymaps/rfong
