@@ -78,6 +78,25 @@ void matrix_scan_user(void) {
 #define RTHM1 MT(MOD_LSFT|MOD_RSFT,KC_SPC)
 #define RTHM3 MT(MOD_LALT|MOD_RALT,KC_ESC)
 
+#define MC_LANG   LCTL(LALT(KC_SPC))    // Switch keyboard language
+#define MC_WNDF   RCTL(RALT(KC_DOWN))   // Spectacle: fullsize window
+#define MC_WNDL   RCTL(RALT(KC_LEFT))   // Spectacle: left half
+#define MC_WNDR   RCTL(RALT(KC_RGHT))   // Spectacle: right half
+#define MC_SLP    LGUI(LCTL(KC_Q))      // Put display to sleep
+#define MC_SCR0   LGUI(LSFT(KC_3))      // Take screenshot
+#define MC_SCR1   LGUI(LSFT(KC_4))      // Take partial screenshot
+
+#define MC_SFAL   MT(MOD_LSFT|MOD_LALT|MOD_RSFT|MOD_RALT,KC_NO) // Shift-alt
+
+enum custom_keycodes {
+    MC_VSAV = SAFE_RANGE,
+    MC_VSPL,
+    MC_VQUI,
+    MC_VTAB,
+    MC_JSCL,
+    SA_COPY,
+};
+
 // Keymap
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_split_3x5_3(
@@ -94,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [1] = LAYOUT_split_3x5_3(
   //,--------------------------------------------.                    ,--------------------------------------------.
-         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
+         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
        KC_ESC,  KC_ENT, KC_PGUP, KC_PGDN, KC_SPC,                       KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, KC_MINS,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
@@ -106,11 +125,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [2] = LAYOUT_split_3x5_3(
   //,--------------------------------------------.                    ,--------------------------------------------.
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       KC_ENT, KC_SCLN, KC_COLN, KC_MINS, KC_EQL,
+      MC_VQUI, MC_VSAV, XXXXXXX, XXXXXXX, MC_LANG,                       KC_ENT, KC_SCLN, KC_COLN, KC_MINS, KC_EQL,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
       KC_LGUI, KC_LALT, KC_LCTL,  KC_TAB, KC_CAPS,                      KC_QUOT,  KC_GRV, KC_RSFT, KC_LBRC, KC_RBRC,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-      RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,                      KC_BSPC, KC_BSLS, KC_PIPE, KC_LPRN, KC_RPRN,
+      MC_VSPL, MC_VTAB, MC_SCR1, MC_SCR0, MC_JSCL,                      KC_BSPC, KC_BSLS, KC_PIPE, KC_LPRN, KC_RPRN,
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
                                  KC_TRNS,  MO(3), KC_TRNS,     KC_TRNS, _______, KC_TRNS
                               //`--------------------------'  `--------------------------'
@@ -118,17 +137,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [3] = LAYOUT_split_3x5_3(
   //,--------------------------------------------.                    ,--------------------------------------------.
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        RESET, RGB_HUI, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  MC_SLP,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-      RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      RGB_MOD, RGB_HUD, RGB_SAI, XXXXXXX, MC_SFAL,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-      RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, KC_LSFT, KC_LALT, XXXXXXX,                      MC_WNDL, MC_WNDF, MC_WNDR, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
                                  KC_TRNS, _______, KC_TRNS,     KC_TRNS, _______, KC_TRNS
                               //`--------------------------'  `--------------------------'
   ),
 
-  /* MOUSE LAYER */
+  /* MOUSE BUTTON LAYER */
   [4] = LAYOUT_split_3x5_3(
   //,--------------------------------------------.                    ,--------------------------------------------.
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -238,11 +257,25 @@ void oled_task_user(void) {
         oled_render_logo();
     }
 }
+#endif // OLED_ENABLE
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (record->event.pressed) {
-    set_keylog(keycode, record);
-  }
-  return true;
+    if (record->event.pressed) {  // on keypress
+        // show keycode on OLED
+        #ifdef OLED_ENABLE
+        set_keylog(keycode, record);
+        #endif // OLED_ENABLE
+
+        // process custom keycodes
+        switch(keycode) {
+            case MC_VSAV: SEND_STRING(":w"SS_TAP(X_ENT)); break;
+            case MC_VQUI: SEND_STRING(":q"SS_TAP(X_ENT)); break;
+            case MC_VSPL: SEND_STRING(":sp"); break;
+            case MC_VTAB: SEND_STRING("s/^  /"); break;
+            case MC_JSCL: SEND_STRING(" => {}"); break;
+            case SA_COPY: SEND_STRING(SS_LCTL("ac")); break;  // example str
+        }
+    }
+    return true;
 }
-#endif // OLED_ENABLE
+
