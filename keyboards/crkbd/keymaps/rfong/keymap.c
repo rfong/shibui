@@ -1,7 +1,7 @@
 /*
 Copyright 2019 @foostan
 Copyright 2020 Drashna Jaelre <@drashna>
-Copyright 2020 @manna-harbor
+Copyright 2020 @manna-harbour
 Copyright 2021 @rfong
 
 This program is free software: you can redistribute it and/or modify
@@ -146,9 +146,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,--------------------------------------------.                    ,--------------------------------------------.
         RESET, RGB_HUI, KC_VOLD, KC_VOLU, KC_MUTE,                      XXXXXXX, KC_BTN1, KC_BTN2, XXXXXXX,  MC_SLP,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-      RGB_MOD, RGB_HUD, KC_MPRV, KC_MNXT, MC_SFAL,                      KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, XXXXXXX,
+      RGB_MOD, RGB_HUD, KC_MPRV, KC_MNXT, KC_MPLY,                      KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, XXXXXXX,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-      KC_BRID, KC_BRIU, KC_LSFT, KC_LALT, KC_MPLY,                      MC_WNDL, MC_WNDF, MC_WNDR, XXXXXXX, XXXXXXX,
+      KC_BRID, KC_BRIU, KC_LSFT, KC_LALT, MC_SFAL,                      MC_WNDL, MC_WNDF, MC_WNDR, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
                                  KC_TRNS, _______, KC_TRNS,     KC_TRNS, _______, KC_TRNS
                               //`--------------------------'  `--------------------------'
@@ -161,7 +161,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_LGUI,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
                                  KC_BTN2, KC_BTN3, KC_BTN1,    KC_BTN1, KC_BTN3, KC_BTN2
                               //`--------------------------'  `--------------------------'
