@@ -5,6 +5,8 @@
 - a 128x32 OLED on the left-hand side
 - 5V Pro Micro controllers with `qmk-dfu` bootloaders
 
+Todolist at [TODO.md](TODO.md).
+
 # Keymap ergonomics
 
 This keymap is designed to alleviate my primary RSI issue, which is pinky nerve pain, and to use as few layers as possible. You will probably not enjoy this keymap if your primary RSI issues are in your thumbs.
@@ -25,6 +27,8 @@ For more details on design choices, layout, and layer use cases, see [KEYMAP.md]
 - For related writeups including my keymap ergonomics design, ISP reflashing guide, and keycap dyeing, see the [#keyboard tag](https://rfong.github.io/rflog/tag/keyboard/) on my blog.
 
 # Using with QMK
+
+With the exception of some top level files, this follows the directory structure of QMK. Custom firmware code is defined in `keyboards/crkbd/keymaps/rfong`.
 
 ## Setup
 
