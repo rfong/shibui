@@ -75,7 +75,9 @@ void matrix_scan_user(void) {
 #endif // defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && #defined MOUSEKEY_ENABLE
 
 
-/* Keymap macros - @rfong */
+/* BEGIN KEYMAP */
+
+/* Custom macros */
 #define LTHM3 MT(MOD_LCTL,KC_TAB)
 #define LTHM1 MT(MOD_LGUI,KC_ENT)
 #define RTHM1 MT(MOD_LSFT|MOD_RSFT,KC_SPC)
@@ -89,7 +91,8 @@ void matrix_scan_user(void) {
 #define MC_SCR0   LGUI(LSFT(KC_3))      // Take screenshot
 #define MC_SCR1   LGUI(LSFT(KC_4))      // Take partial screenshot
 
-#define MC_SFAL   MT(MOD_LSFT|MOD_LALT|MOD_RSFT|MOD_RALT,KC_NO) // Shift-alt
+// seems to be broken in iterm
+#define MC_SFAL   RSA_T(KC_SPC)         // Shift-alt when held, space tap
 
 enum custom_keycodes {
     MC_VSAV = SAFE_RANGE,
@@ -100,7 +103,7 @@ enum custom_keycodes {
     SA_COPY,
 };
 
-/* Keymap - @rfong */
+/* Keymap */
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /* BASE (ALPHAS) */
   [0] = LAYOUT_split_3x5_3(
@@ -109,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
          KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_QUOT,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                          KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,
+         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
                                    LTHM3,   MO(1),    LTHM1,     RTHM1,   MO(2),   RTHM3 
                               //`--------------------------'  `--------------------------'
@@ -120,7 +123,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,--------------------------------------------.                    ,--------------------------------------------.
          KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-       KC_ESC,  KC_ENT, KC_PGUP, KC_PGDN, KC_SPC,                       KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, KC_MINS,
+       KC_ESC,  KC_ENT, KC_PGUP, KC_PGDN, MC_SFAL,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, KC_MINS,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
       KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_PDOT, KC_SLSH,
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
@@ -148,7 +151,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
       RGB_MOD, RGB_HUD, KC_MPRV, KC_MNXT, KC_MPLY,                      KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, XXXXXXX,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-      KC_BRID, KC_BRIU, KC_LSFT, KC_LALT, MC_SFAL,                      MC_WNDL, MC_WNDF, MC_WNDR, XXXXXXX, XXXXXXX,
+      KC_BRID, KC_BRIU, KC_LSFT, KC_LALT, XXXXXXX,                      MC_WNDL, MC_WNDF, MC_WNDR, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
                                  KC_TRNS, _______, KC_TRNS,     KC_TRNS, _______, KC_TRNS
                               //`--------------------------'  `--------------------------'
@@ -159,14 +162,37 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,--------------------------------------------.                    ,--------------------------------------------.
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, KC_LCTL, KC_LGUI, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_LGUI,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, KC_LSFT, KC_LALT, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
                                  KC_BTN2, KC_BTN3, KC_BTN1,    KC_BTN1, KC_BTN3, KC_BTN2
                               //`--------------------------'  `--------------------------'
   )
 };
+
+/* Special keycode processing */
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {  // on keypress
+        // show keycode on OLED
+        #ifdef OLED_ENABLE
+        set_keylog(keycode, record);
+        #endif // OLED_ENABLE
+
+        // process custom keycodes
+        switch(keycode) {
+            case MC_VSAV: SEND_STRING(":w"SS_TAP(X_ENT)); break;
+            case MC_VQUI: SEND_STRING(":q"SS_TAP(X_ENT)); break;
+            case MC_VSPL: SEND_STRING(":sp "); break;
+            case MC_VTAB: SEND_STRING("s/^  /"); break;
+            case MC_JSCL: SEND_STRING(" => {}"); break;
+            case SA_COPY: SEND_STRING(SS_LCTL("ac")); break;  // example str
+        }
+    }
+    return true;
+}
+
+/* END KEYMAP */
 
 /* This section from crkbd:default
  * Send debug info to OLED */
@@ -266,25 +292,4 @@ void oled_task_user(void) {
     }
 }
 #endif // OLED_ENABLE
-
-/* Special keycode processing - @rfong */
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {  // on keypress
-        // show keycode on OLED
-        #ifdef OLED_ENABLE
-        set_keylog(keycode, record);
-        #endif // OLED_ENABLE
-
-        // process custom keycodes
-        switch(keycode) {
-            case MC_VSAV: SEND_STRING(":w"SS_TAP(X_ENT)); break;
-            case MC_VQUI: SEND_STRING(":q"SS_TAP(X_ENT)); break;
-            case MC_VSPL: SEND_STRING(":sp "); break;
-            case MC_VTAB: SEND_STRING("s/^  /"); break;
-            case MC_JSCL: SEND_STRING(" => {}"); break;
-            case SA_COPY: SEND_STRING(SS_LCTL("ac")); break;  // example str
-        }
-    }
-    return true;
-}
 
