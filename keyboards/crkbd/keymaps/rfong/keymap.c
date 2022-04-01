@@ -269,22 +269,6 @@ bool showedJump = true;
  * Send debug info to OLED */
 #ifdef OLED_ENABLE
 
-/*oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-  if (!is_keyboard_master()) {
-    return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
-  }
-  return rotation;
-}*/
-
-#define L_BASE 0  // alphas
-#define L_1 2     // num, sym, nav
-#define L_2 4     // coding
-#define L_3 8     // system functions (volume, brightness, etc)
-
-#define L_5 12    // math layer
-#define L_6 14    // dedicated nav layer (compatible w/ mousebutton layer)
-
-
 void oled_render_layer_state(void) {
     oled_set_cursor(0,0);
     oled_write_P(PSTR("Layer"), false);
@@ -320,12 +304,6 @@ void oled_render_layer_state(void) {
         default:
             oled_write_ln_P(PSTR("???"), false);
     }
-    /*
-    if (is_keyboard_master()) {
-        oled_write_ln_P(PSTR("Master side"), false);
-    } else {
-        oled_write_ln_P(PSTR("Not master"), false);
-    }*/
 }
 
 
@@ -391,25 +369,6 @@ void render_bootmagic_status(bool status) {
         oled_write_ln_P(logo[1][1], false);
     }
 }
-/*
-void oled_render_logo(void) {
-    static const char PROGMEM crkbd_logo[] = {
-        0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f, 0x90, 0x91, 0x92, 0x93, 0x94,
-        0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7, 0xa8, 0xa9, 0xaa, 0xab, 0xac, 0xad, 0xae, 0xaf, 0xb0, 0xb1, 0xb2, 0xb3, 0xb4,
-        0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xcb, 0xcc, 0xcd, 0xce, 0xcf, 0xd0, 0xd1, 0xd2, 0xd3, 0xd4,
-        0};
-    oled_write_P(crkbd_logo, false);
-}
-
-void oled_task_user(void) {
-    if (is_keyboard_left()) {
-        oled_render_layer_state();
-        oled_render_keylog();
-    } else {
-        oled_render_logo();
-    }
-}
-*/
 
 /* Keyboard Pet settings */
 #define MIN_WALK_SPEED 10
@@ -553,26 +512,6 @@ static void render_keyboard_pet(int KEYBOARD_PET_X, int KEYBOARD_PET_Y) {
 
 }
 
-/*
-static void print_logo_narrow(void) {
-    // Keyboard logo
-    //render_logo();
-}
-*/
-/*
-static void print_wpm(void) {
-    // wpm counter
-    char wpm_str[5];
-    wpm_str[4] = '\0';
-    wpm_str[3] = '0' + current_wpm % 10;
-    wpm_str[2] = '0' + ( current_wpm /= 10) % 10;
-    wpm_str[1] = '0' + current_wpm / 10;
-    wpm_str[0] = ' ';
-    oled_set_cursor(0,4);
-    oled_write(wpm_str, false);
-    oled_write_P(PSTR("  wpm"), false);
-}
-*/
 static void print_status_narrow(void) {
 
     /* Print current OS */
@@ -620,8 +559,6 @@ static void print_status_narrow(void) {
 
     /* Keyboard Pet Render */
     render_keyboard_pet(0,13);
-
-    //print_wpm();
 }
 
 /* vertical screens orientation fix */
@@ -634,13 +571,7 @@ void oled_task_user(void) {
     /* Keyboard Pet Variables */
     current_wpm = get_current_wpm();
     led_usb_state = host_keyboard_led_state();
-
-    //if (is_keyboard_master()) {
-        print_status_narrow();
-    //} else {
-    //    print_logo_narrow();
-    //}
-    //return false;
+    print_status_narrow();
 }
 
 #endif // OLED_ENABLE
