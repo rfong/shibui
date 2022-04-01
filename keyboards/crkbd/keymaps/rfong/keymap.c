@@ -49,9 +49,46 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* Activate mouse button layer with PS2 mouse - crkbd:manna-harbour */
 #if defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE
 
+/* BEGIN TAPDANCE SETUP */
+
+// Define a type for as many tap dance states as you need
+typedef enum {
+    TD_NONE,
+    TD_UNKNOWN,
+    TD_SINGLE_TAP,
+    TD_SINGLE_HOLD,
+    TD_DOUBLE_TAP
+} td_state_t;
+
+typedef struct {
+    bool is_press_action;
+    td_state_t state;
+} td_tap_t;
+
+enum {
+    TDL1,  // Momentary = layer 1, doubletap = layer 5
+    TDL2,  // Momentary = layer 2, doubletap = layer 6
+};
+
+// Declare the functions to be used with your tap dance key(s)
+
+// Function associated with all tap dances
+td_state_t cur_dance(qk_tap_dance_state_t *state);
+
+// Functions associated with individual tap dances
+void ql_finished(qk_tap_dance_state_t *state, void *user_data, layer_state_t hold_layer, layer_state_t dt_layer);
+void ql_finished_left(qk_tap_dance_state_t *state, void *user_data);
+void ql_finished_right(qk_tap_dance_state_t *state, void *user_data);
+void ql_reset(qk_tap_dance_state_t *state, void *user_data, layer_state_t hold_layer);
+void ql_reset_left(qk_tap_dance_state_t *state, void *user_data);
+void ql_reset_right(qk_tap_dance_state_t *state, void *user_data);
+
+/* END TAPDANCE SETUP */
+
 static uint16_t mh_auto_buttons_timer;
 extern int tp_buttons; // mousekey button state set in action.c and used in ps2_mouse.c
 
+// If mouse has moved recently, activate mousebutton layer
 void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
   if (mh_auto_buttons_timer) {
     mh_auto_buttons_timer = timer_read();
@@ -120,7 +157,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
-                                   LTHM3,   MO(1),    LTHM1,     RTHM1,   MO(2),   RTHM3 
+                                   LTHM3,TD(TDL1),    LTHM1,     RTHM1,TD(TDL2),   RTHM3 
                               //`--------------------------'  `--------------------------'
   ),
 
@@ -174,6 +211,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
                                  KC_BTN2, KC_BTN3, KC_BTN1,    KC_BTN1, KC_BTN3, KC_BTN2
                               //`--------------------------'  `--------------------------'
+  ),
+
+  /* MATH SYMBOL LAYER */
+  [5] = LAYOUT_split_3x5_3(
+  //,--------------------------------------------.                    ,--------------------------------------------.
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX,    KC_5, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
+                                 KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS
+                              //`--------------------------'  `--------------------------'
+  ),
+
+  /* DEDICATED NAV LAYER */
+  [6] = LAYOUT_split_3x5_3(
+  //,--------------------------------------------.                    ,--------------------------------------------.
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX,    KC_6, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
+                                 KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS
+                              //`--------------------------'  `--------------------------'
   )
 };
 
@@ -213,10 +276,14 @@ bool showedJump = true;
   return rotation;
 }*/
 
-#define L_BASE 0
-#define L_1 2
-#define L_2 4
-#define L_3 8
+#define L_BASE 0  // alphas
+#define L_1 2     // num, sym, nav
+#define L_2 4     // coding
+#define L_3 8     // system functions (volume, brightness, etc)
+
+#define L_5 12    // math layer
+#define L_6 14    // dedicated nav layer (compatible w/ mousebutton layer)
+
 
 void oled_render_layer_state(void) {
     oled_set_cursor(0,0);
@@ -226,21 +293,32 @@ void oled_render_layer_state(void) {
         return;
     }
     switch (layer_state) {
-        case L_BASE:
+        case 0:
             oled_write_ln_P(PSTR("Base"), false);
             break;
-        case L_1:
+        case 1:
             oled_write_ln_P(PSTR("Num"), false);
             break;
-        case L_2:
+        case 2:
             oled_write_ln_P(PSTR("Sym"), false);
             break;
-        case L_3:
-        case L_3|L_1:
-        case L_3|L_2:
-        case L_3|L_2|L_1:
+        case 3:
+        case 3|1:
+        case 3|2:
+        case 3|2|1:
             oled_write_ln_P(PSTR("Fn"), false);
             break;
+        case 4:
+            oled_write_ln_P(PSTR("Mouse"), false);
+            break;
+        case 5:
+            oled_write_ln_P(PSTR("Math"), false);
+            break;
+        case 6:
+            oled_write_ln_P(PSTR("Nav"), false);
+            break;
+        default:
+            oled_write_ln_P(PSTR("???"), false);
     }
     /*
     if (is_keyboard_master()) {
@@ -567,3 +645,69 @@ void oled_task_user(void) {
 
 #endif // OLED_ENABLE
 
+/* BEGIN TAPDANCE FUNCTIONALITY */
+
+// Determine the current tap dance state
+td_state_t cur_dance(qk_tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (!state->pressed) return TD_SINGLE_TAP;
+        else return TD_SINGLE_HOLD;
+    } else if (state->count == 2) return TD_DOUBLE_TAP;
+    else return TD_UNKNOWN;
+}
+
+// Initialize tap structure associated with example tap dance key
+static td_tap_t ql_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+// Functions that control what our tap dance key does
+void ql_finished(qk_tap_dance_state_t *state, void *user_data, layer_state_t hold_layer, layer_state_t dt_layer) {
+    ql_tap_state.state = cur_dance(state);
+    switch (ql_tap_state.state) {
+        case TD_SINGLE_HOLD:
+            layer_on(hold_layer);
+            break;
+        case TD_DOUBLE_TAP:  // Toggle
+            // Check to see if the layer is already set
+            if (layer_state_is(dt_layer)) {
+                // If already set, then switch it off
+                layer_off(dt_layer);
+            } else {
+                // If not already set, then switch the layer on
+                layer_on(dt_layer);
+            }
+            break;
+        default:
+            break;
+    }
+}
+void ql_finished_left(qk_tap_dance_state_t *state, void *user_data) {
+    ql_finished(state, user_data, 1, 5);
+}
+void ql_finished_right(qk_tap_dance_state_t *state, void *user_data) {
+    ql_finished(state, user_data, 2, 6);
+}
+
+void ql_reset(qk_tap_dance_state_t *state, void *user_data, layer_state_t hold_layer) {
+    // If the key was held down and now is released then switch off the layer
+    if (ql_tap_state.state == TD_SINGLE_HOLD) {
+        layer_off(hold_layer);
+    }
+    ql_tap_state.state = TD_NONE;
+}
+void ql_reset_left(qk_tap_dance_state_t *state, void *user_data) {
+    ql_reset(state, user_data, 1);
+}
+void ql_reset_right(qk_tap_dance_state_t *state, void *user_data) {
+    ql_reset(state, user_data, 2);
+}
+
+// Associate our tap dance key with its functionality
+qk_tap_dance_action_t tap_dance_actions[] = {
+    [TDL1] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, ql_finished_left, ql_reset_left, 275),
+    [TDL2] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, ql_finished_right, ql_reset_right, 275)
+};
+
+/* END TAPDANCE FUNCTIONALITY */
