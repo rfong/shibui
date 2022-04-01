@@ -46,9 +46,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#include MH_USER_NAME_H // for MH_AUTO_BUTTONS_LAYER
 #endif
 
-/* Activate mouse button layer with PS2 mouse - crkbd:manna-harbour */
-#if defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE
-
 /* BEGIN TAPDANCE SETUP */
 
 // Define a type for as many tap dance states as you need
@@ -84,6 +81,9 @@ void ql_reset_left(qk_tap_dance_state_t *state, void *user_data);
 void ql_reset_right(qk_tap_dance_state_t *state, void *user_data);
 
 /* END TAPDANCE SETUP */
+
+/* Activate mouse button layer with PS2 mouse - crkbd:manna-harbour */
+#if defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE
 
 static uint16_t mh_auto_buttons_timer;
 extern int tp_buttons; // mousekey button state set in action.c and used in ps2_mouse.c
@@ -213,7 +213,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                               //`--------------------------'  `--------------------------'
   ),
 
-  /* MATH SYMBOL LAYER */
+
+  /* MATH LAYER (todo) */
   [5] = LAYOUT_split_3x5_3(
   //,--------------------------------------------.                    ,--------------------------------------------.
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -231,9 +232,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,--------------------------------------------.                    ,--------------------------------------------.
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX,    KC_6, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, XXXXXXX,
   //|--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       KC_ENT, KC_PGUP, KC_PGDN, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+---------|  |-------+--------+--------+--------+--------+--------|
                                  KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS
                               //`--------------------------'  `--------------------------'
@@ -269,41 +270,34 @@ bool showedJump = true;
  * Send debug info to OLED */
 #ifdef OLED_ENABLE
 
+static const char PROGMEM layer_names[7][5] = {
+  "Base",
+  "Num",
+  "Sym",
+  "Fn",
+  "     ",
+  "Math",
+  "Nav",
+};
+
+// recall that layer_state flips bits for each layer that is activated;
+// multiple layers may be active
 void oled_render_layer_state(void) {
     oled_set_cursor(0,0);
     oled_write_P(PSTR("Layer"), false);
-    if (layer_state_is(MH_AUTO_BUTTONS_LAYER)) {
+    if (IS_LAYER_ON(MH_AUTO_BUTTONS_LAYER)) {
         oled_write_ln_P(PSTR("Mouse"), false);
         return;
     }
-    switch (layer_state) {
-        case 0:
-            oled_write_ln_P(PSTR("Base"), false);
-            break;
-        case 1:
-            oled_write_ln_P(PSTR("Num"), false);
-            break;
-        case 2:
-            oled_write_ln_P(PSTR("Sym"), false);
-            break;
-        case 3:
-        case 3|1:
-        case 3|2:
-        case 3|2|1:
-            oled_write_ln_P(PSTR("Fn"), false);
-            break;
-        case 4:
-            oled_write_ln_P(PSTR("Mouse"), false);
-            break;
-        case 5:
-            oled_write_ln_P(PSTR("Math"), false);
-            break;
-        case 6:
-            oled_write_ln_P(PSTR("Nav"), false);
-            break;
-        default:
-            oled_write_ln_P(PSTR("???"), false);
+    // Loop through layers in reverse. Write & quit on the first active one.
+    for(int i = 7; i >= 0; i--) {
+        if (IS_LAYER_ON(i)) {
+            oled_write_ln_P(layer_names[i], false);
+            oled_write_ln_P(PSTR("     "), false);
+            return;
+        }
     }
+    oled_write_ln_P(PSTR("???"), false);
 }
 
 
@@ -333,10 +327,12 @@ void set_keylog(uint16_t keycode, keyrecord_t *record) {
            name, keycode);
 }
 
+/*
 void oled_render_keylog(void) {
     oled_set_cursor(0,5);
     oled_write(keylog_str, false);
 }
+*/
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {  // on keypress
@@ -533,7 +529,7 @@ static void print_status_narrow(void) {
       oled_write_P(PSTR("    "), false);
     }
 
-    oled_render_keylog();
+    //oled_render_keylog();
 
    /* Joystick debugging */
 #      ifdef JOYSTICK_ENABLE
@@ -606,8 +602,9 @@ void ql_finished(qk_tap_dance_state_t *state, void *user_data, layer_state_t hol
                 // If already set, then switch it off
                 layer_off(dt_layer);
             } else {
-                // If not already set, then switch the layer on
-                layer_on(dt_layer);
+                // If not already set, then move to this layer.
+                // (Note: if you need nested layers, use layer_on instead)
+                layer_move(dt_layer);
             }
             break;
         default:

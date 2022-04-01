@@ -16,6 +16,9 @@ WPM_LAUNCH_CONTROL=yes
 ### Tap dance
 TAP_DANCE_ENABLE = yes
 
+### Characters
+UNICODE_ENABLE = yes
+
 ### RGB
 #RGB_MATRIX_ENABLE = yes
 #RGB_MATRIX_DRIVER = WS2812
