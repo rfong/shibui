@@ -1,9 +1,23 @@
 # https://github.com/manna-harbour/qmk_firmware/blob/crkbd/keyboards/crkbd/keymaps/manna-harbour/readme.org
 
+SPLIT_KEYBOARD=yes
+
 BOOTLOADER=qmk-dfu
 #BOOTLOADER=atmel-dfu
 #BOOTLOADER=caterina
 
+### WPM config
+WPM_ENABLE=yes
+WPM_ALLOW_COUNT_REGRESSION=yes
+WPM_SAMPLE_SECONDS=5
+WPM_SAMPLE_PERIODS=5
+WPM_LAUNCH_CONTROL=yes
+
+### RGB
+#RGB_MATRIX_ENABLE = yes
+#RGB_MATRIX_DRIVER = WS2812
+
+### Trackpoint config
 #MH_MODULE=trackpoint
 #MH_MODULE=oled
 #MH_MODULE=oled_old
@@ -16,12 +30,6 @@ ifeq ($(strip $(MH_MODULE)), trackpoint)
   MH_AUTO_BUTTONS=yes
   OLED_ENABLE=no
 endif
-
-
-#MH_RGB=matrix
-#MH_RGB=backlight
-#MH_RGB=underglow
-MH_RGB=no
 
 DEBUG=yes
 MH_DEBUG=yes
@@ -60,15 +68,6 @@ ifeq ($(strip $(MH_OLED_MODE)), static)
   OPT_DEFS += -DMH_OLED_MODE_STATIC
 else ifeq ($(strip $(MH_OLED_MODE)), caps)
   OPT_DEFS += -DMH_OLED_MODE_CAPS
-endif
-
-ifeq ($(strip $(MH_RGB)), matrix)
-  RGB_MATRIX_ENABLE = WS2812
-else ifeq ($(strip $(MH_RGB)), light)
-  RGBLIGHT_ENABLE = yes
-else ifeq ($(strip $(MH_RGB)), underglow)
-  RGBLIGHT_ENABLE = yes
-  OPT_DEFS += -DMH_RGB_UNDERGLOW
 endif
 
 ifeq ($(strip $(MH_DEBUG)), yes)

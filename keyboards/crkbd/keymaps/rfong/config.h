@@ -3,8 +3,27 @@
 #pragma once
 
 #define MASTER_RIGHT
-#define EE_HANDS
 
+// Split data transport
+#define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_LED_STATE_ENABLE
+#define SPLIT_WPM_ENABLE
+
+// Matrix
+/*#define RGB_MATRIX_FRAMEBUFFER_EFFECTS
+#define ENABLE_RGB_MATRIX_TYPING_HEATMAP
+#define RGB_DI_PIN D3    // LED data pin
+
+#ifdef RGBLIGHT_ENABLE
+#define RGBLED_NUM 12    // Number of LEDs
+#endif
+#ifdef RGB_MATRIX_ENABLE
+#define RGBLED_NUM 54    // Number of LEDs
+#define DRIVER_LED_TOTAL RGBLED_NUM
+#endif
+*/
+
+// Trackpoint module
 #if defined MH_MODULE_TRACKPOINT && defined PS2_MOUSE_ENABLE
   // clock on pin 1 (d0, int0)
   #define PS2_CLOCK_PORT PORTD
@@ -27,10 +46,11 @@
   #define PS2_MOUSE_SCROLL_DIVISOR_H PS2_MOUSE_SCROLL_DIVISOR_V
 #endif
 
-#if defined MH_AUTO_BUTTONS
+//#if defined MH_AUTO_BUTTONS
+// Non-master controller needs to know about these too
   #define MH_AUTO_BUTTONS_LAYER 4
   #define MH_AUTO_BUTTONS_TIMEOUT 300
-#endif
+//#endif
 
 #if !defined MH_LOW_MOUSE && defined PS2_MOUSE_ENABLE
   // sensitivity
