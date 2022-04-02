@@ -9,16 +9,9 @@ Todolist at [TODO.md](TODO.md).
 
 # Keymap ergonomics
 
-This keymap is designed to alleviate my primary RSI issue, which is pinky nerve pain, and to use as few layers as possible. You will probably not enjoy this keymap if your primary RSI issues are in your thumbs.
+This 36-key layout is designed to alleviate my primary RSI issue, which is pinky nerve pain, and to use as few layers as possible. You will probably not enjoy this keymap if your primary RSI issues are in your thumbs. For more details on design choices, layout, and layer use cases, see [KEYMAP.md](KEYMAP.md).
 
-### Design priorities
-- Reallocates traditional pinky work to the thumbs, in particular all modifiers
-- Leverage existing muscle memory from standard laptop keyboard layouts (but compactify it)
-- Chording comfort and minimal layer-switching for keys frequently used together
-- Use cases: `vim`, terminal ergonomics, notetaking
-- Numrow instead of numpad
-
-For more details on design choices, layout, and layer use cases, see [KEYMAP.md](KEYMAP.md).
+If my keymap design decisions do not appeal to you, you might prefer the popular [`miryoku`](https://github.com/manna-harbour/miryoku) layout.
 
 # Hardware build logs
 

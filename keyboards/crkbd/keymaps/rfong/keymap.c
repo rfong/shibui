@@ -214,7 +214,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
 
-  /* MATH LAYER (todo) */
+  /* MATH LAYER (TODO) */
   [5] = LAYOUT_split_3x5_3(
   //,--------------------------------------------.                    ,--------------------------------------------.
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -227,7 +227,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                               //`--------------------------'  `--------------------------'
   ),
 
-  /* DEDICATED NAV LAYER */
+  /* DEDICATED NAV LAYER (TODO) */
   [6] = LAYOUT_split_3x5_3(
   //,--------------------------------------------.                    ,--------------------------------------------.
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
